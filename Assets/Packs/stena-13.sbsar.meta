@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ac35415a4f0d99b47813457fb33af553
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: dda12f74ff9116a42b23482252b2c482, type: 3}
+  _instancesCopy:
+  - {fileID: 11400000, guid: 49413cce8f4679a48ae24e737c349f2b, type: 2}
+  _fileAsset: {fileID: 6013892654665635331, guid: ac35415a4f0d99b47813457fb33af553, type: 3}
+  _assetPath: Assets/Packs/stena-13.sbsar
