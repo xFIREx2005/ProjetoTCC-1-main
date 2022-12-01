@@ -5,13 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class TrocaCena : MonoBehaviour
 {
+    public static string cenaStatic;
     public string cena;
+    public GameObject transi;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene(cena);
+            cenaStatic = cena;
+            transi.SetActive(true);
+            
         }
     }
 }

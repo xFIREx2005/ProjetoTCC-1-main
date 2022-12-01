@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class StaticPlayer : MonoBehaviour
 {
-    public static float currentHealth = 200;
+    public static float currentHealth = 100;
 }

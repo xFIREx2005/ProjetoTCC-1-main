@@ -19,6 +19,8 @@ public class PlayerAttack : MonoBehaviour
     public bool rotateEnemy;
     public Transform enemyTrans;
 
+    public GameObject slash;
+
     private void Start()
     {
         anim = gameObject.GetComponent<Animator>();
@@ -37,7 +39,7 @@ public class PlayerAttack : MonoBehaviour
             noOfClicks++;
             if(noOfClicks == 1)
             {
-                attackDamage = 20;
+                attackDamage = 10;
                 PlayerController.mov = false;
                 anim.SetBool("running", false);
                 anim.SetBool("sprint", false);
@@ -74,7 +76,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if(noOfClicks >= 2)
         {
-            attackDamage = 25;
+            attackDamage = 15;
             anim.SetBool("2", true);
         }
         else
@@ -87,7 +89,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (noOfClicks >= 3)
         {
-            attackDamage = 35;
+            attackDamage = 25;
             anim.SetBool("3", true);
         }
         else
@@ -121,7 +123,7 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator RotateTime()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         rotateEnemy = false;
     }
 
@@ -145,11 +147,20 @@ public class PlayerAttack : MonoBehaviour
 
     public void MovTrue()
     {
+        slash.SetActive(false);
         PlayerController.mov = true;
     }
     public void MovFalse()
     {
+        slash.SetActive(true);
+        StartCoroutine(TimeDamage());
         PlayerController.mov = false;
+    }
+
+    public IEnumerator TimeDamage()
+    {
+        yield return new WaitForSeconds(2f);
+        attackHit = false;
     }
     
 }

@@ -21,7 +21,7 @@ public class EnemyController : MonoBehaviour
     public Transform alvo;
     public Vector3 posicInicialDaAI;
     public Vector3 ultimaPosicConhecida;
-    float timerProcura;
+    public float timerProcura;
     public static float timerProc;
     public float dist;
     public float distI;
@@ -53,17 +53,17 @@ public class EnemyController : MonoBehaviour
                 currentHealth -= damage;
                 if (currentHealth <= 0)
                 {
-                    healthPercent = 0;
-                    Destroy(canvasHealthBar);
-                    GetComponent<AISimples>().enabled = false;
                     anim.SetBool("walk", false);
                     anim.SetBool("run", false);
                     anim.SetBool("attack", false);
+                    anim.SetBool("damage", false);
                     anim.SetBool("die", true);
+                    healthPercent = 0;
+                    Destroy(canvasHealthBar);
+                    
                 }
                 else
                 {
-                    stop = true;
                     anim.SetBool("walk", false);
                     anim.SetBool("run", false);
                     anim.SetBool("attack", false);
@@ -112,7 +112,8 @@ public class EnemyController : MonoBehaviour
 
     public IEnumerator AttackRecover()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
+        attack = true;
         stop = false;
     }
 
@@ -127,11 +128,13 @@ public class EnemyController : MonoBehaviour
                     case estadoDaAI.parado:
                         anim.SetBool("walk", true);
                         anim.SetBool("run", false);
-                        _navMesh.speed = 1;
+                        _navMesh.speed = 2;
                         _navMesh.SetDestination(posicInicialDaAI);
                         distI = Vector3.Distance(transform.position, posicInicialDaAI);
                         if (distI < 1)
                         {
+                            anim.SetBool("walk", false);
+                            anim.SetBool("run", false);
                             timerProc += 1 * Time.deltaTime;
                             if (timerProc >= 3)
                             {
@@ -153,7 +156,7 @@ public class EnemyController : MonoBehaviour
                         anim.SetBool("proc", false);
                         anim.SetBool("walk", false);
                         anim.SetBool("run", true);
-                        _navMesh.speed = 2f;
+                        _navMesh.speed = 3;
                         _navMesh.SetDestination(alvo.position);
                         if (!_cabeca.inimigosVisiveis.Contains(alvo))
                         {
@@ -187,27 +190,27 @@ public class EnemyController : MonoBehaviour
     public void VerfDis()
     {
         dist = Vector3.Distance(transform.position, player.transform.position);
-        if (dist <= 2)
+        if (dist <= 2f)
         {
-            if (_estadoAI == estadoDaAI.seguindo)
-            {
-                Vector3 pos = player.transform.position - transform.position;
+
+            _navMesh.speed = 0;
+            anim.SetBool("proc", false);
+            anim.SetBool("walk", false);
+            anim.SetBool("run", false);
+            Vector3 pos = player.transform.position - transform.position;
                 pos.y = 0;
                 Quaternion rot = Quaternion.LookRotation(pos);
                 transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.time * 10);
                 if (attack == true)
                 {
-                    anim.SetBool("attack", true);
-                }
+                anim.SetBool("attack", true);
+                AttackRecover();
+                attack = false;
             }
-            _navMesh.speed = 0;
-            anim.SetBool("proc", false);
-            anim.SetBool("walk", false);
-            anim.SetBool("run", false);
         }
         else
         {
-            anim.SetBool("attack", false);
+                anim.SetBool("attack", false);
         }
 
         if (ifAttack == true)
@@ -222,10 +225,8 @@ public class EnemyController : MonoBehaviour
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, playerlayers); 
         foreach (Collider player in hitEnemies)
         {
-            Debug.Log("legal");
             player.GetComponent<PlayerController>().TakeDamage(attackDamage);
         }
-        stop = true;
     }
     public void AttackTrue()
     {

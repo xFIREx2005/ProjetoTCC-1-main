@@ -30,7 +30,7 @@ public class Enemy_BigBig : EnemyController
 
     private void Start()
     {
-        maxHelth = 400;
+        maxHelth = 600;
         ifDamage = true;
         currentHealth = maxHelth;
         player = GameObject.FindWithTag("Player");
@@ -64,7 +64,7 @@ public class Enemy_BigBig : EnemyController
 
     public void Follow()
     {
-        _navMesh.speed = 2;
+        _navMesh.speed = 3;
         _navMesh.SetDestination(player.transform.position);
         anim.SetBool("walk", true);
     }
@@ -77,7 +77,7 @@ public class Enemy_BigBig : EnemyController
                 if (ifAtk == true)
                 {
                     ifFollow = true;
-                    if (dist <= 2)
+                    if (dist <= 5)
                     {
                         this.transform.LookAt(player.transform);
                         ifFollow = false;
@@ -91,7 +91,7 @@ public class Enemy_BigBig : EnemyController
                 if (ifAtk == true)
                 {
                     ifFollow = true;
-                    if (dist <= 4)
+                    if (dist <= 8)
                     {
                         this.transform.LookAt(player.transform);
                         ifFollow = false;
@@ -106,11 +106,11 @@ public class Enemy_BigBig : EnemyController
                 {
                     if (Enemys.Length == 0)
                     {
-                        numSpawn = Random.RandomRange(2, 5);
+                        numSpawn = Random.Range(2, 4);
                         for (int i = 0; i < numSpawn; i++)
                         {
-                            posSpawnX = Random.RandomRange(rangeSpawn1.position.x, rangeSpawn2.position.x);
-                            posSpawnZ = Random.RandomRange(rangeSpawn1.position.z, rangeSpawn2.position.z);
+                            posSpawnX = Random.Range(rangeSpawn1.position.x, rangeSpawn2.position.x);
+                            posSpawnZ = Random.Range(rangeSpawn1.position.z, rangeSpawn2.position.z);
                             Instantiate(EnemySpawn, new Vector3(posSpawnX, rangeSpawn1.position.y, posSpawnZ), transform.rotation);
                         }
                     }

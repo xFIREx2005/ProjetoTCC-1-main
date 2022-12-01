@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public bool movi;
     public bool ifDamage;
 
-    public static int maxHelth = 200;
+    public static int maxHelth = 100;
     public static float currentHealth;
 
     public Image imgHealthBar;
@@ -65,8 +65,8 @@ public class PlayerController : MonoBehaviour
             Jump();
             Movimentation();
             Rotation();
-            Roll();
         }
+        if(stamina > 3)Roll();
     }
     
     private void FixedUpdate()
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     {
         if (xRaw != 0 || zRaw != 0)
         {
-            rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * transform.forward);
+            rb.MovePosition(rb.position + speed * Time.deltaTime * transform.forward);
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
             else{speed = speedRun;}
         }
         if (Input.GetKey(KeyCode.LeftShift)) { }
-        else{if (stamina < 5){stamina += Time.deltaTime;}}
+        else{if (stamina < maxStamina){stamina += 2 * Time.deltaTime;}}
     }
 
     void Rotation()
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
     }
     void Roll()
     {
-        if (Input.mouseScrollDelta.y != 0)
+        if (Input.mouseScrollDelta.y != 0 || Input.GetKeyDown(KeyCode.E))
         {
             anim.SetBool("sprint", false);
             anim.SetBool("running", false);
@@ -181,8 +181,18 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("2", false);
             anim.SetBool("3", false);
             mov = false;
+            StartCoroutine(RollTime());
             anim.SetBool("roll", true);
         }
+    }
+    public IEnumerator RollTime()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+    }
+    public void RollStamina()
+    {
+        stamina -= 3;
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -207,6 +217,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("3", false);
         anim.SetBool("jump", false);
         anim.SetBool("damage", true);
+        StartCoroutine(DamageRecover());
             if (ifDamage == true)
             {
                 currentHealth -= damage;
@@ -220,9 +231,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    public IEnumerator DamageRecover()
+    {
+        yield return new WaitForSeconds(1.5f);
+        anim.SetBool("damage", false);
+    }
     void Die()
     {
-        SceneManager.LoadScene("BigBig");
+        Application.LoadLevel(Application.loadedLevel);
     }
 
     public void death()

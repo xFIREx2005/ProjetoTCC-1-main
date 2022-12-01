@@ -9,7 +9,7 @@ public class Enemy_SpawnBigBig : EnemyController
 
     private void Start()
     {
-        randomSpeed = Random.RandomRange(2, 6);
+        randomSpeed = Random.Range(2, 6);
         attackDamage = 20;
         player = GameObject.FindWithTag("Player");
         anim = GetComponent<Animator>();

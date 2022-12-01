@@ -9,18 +9,27 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: d049d49d519c46b44b922c5e8b4ff4cd
   - enabled: 1
-    path: Assets/Scenes/Inimigos/CombatArea.unity
-    guid: 161d68ef897fa8f4daf1cad8c0a25937
+    path: Assets/Scenes/Cenarios/BigBigMansion.unity
+    guid: a772edbfec2ea374483b09d0c56d030a
   - enabled: 1
-    path: Assets/Scenes/Test/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Cenarios/BigBigBattle.unity
+    guid: 9d6fc1b803f7281488263f8e7524c54c
   - enabled: 1
-    path: Assets/Scenes/Cenarios/TesteTerrian.unity
-    guid: 4367669f5bba24742866c48975787cb8
+    path: Assets/Scenes/Cenarios/KitsuneSQN.unity
+    guid: 73d3c94627f70674d881e93b2eb7e578
   - enabled: 1
-    path: Assets/Scenes/Inimigos/TestEnemy.unity
-    guid: 97f584c5f005bf74bba7a9d564e15ff5
+    path: Assets/Scenes/Cenarios/Cidade.unity
+    guid: c5434e08436cfbc44b4d000a7a640865
   - enabled: 1
-    path: Assets/Scenes/Inimigos/BigBig.unity
-    guid: a5237d0ddf19dec44b91b948014f633a
+    path: Assets/Scenes/MeMonjaBattle.unity
+    guid: a78ecdc18dce7c142bbd94111c7ea6e4
+  - enabled: 1
+    path: Assets/Scenes/MeMonja.unity
+    guid: 06ecebdd4684e264baf00d4721e313e6
+  - enabled: 1
+    path: Assets/Scenes/Cenarios/FlorestaMontanha.unity
+    guid: 5a14a130c6a7a5043949b1abc0b35a21
+  - enabled: 1
+    path: Assets/Scenes/Cenarios/Arrozais.Floresta.unity
+    guid: b89d52ee1da52434cb3be6d2ef04710b
   m_configObjects: {}

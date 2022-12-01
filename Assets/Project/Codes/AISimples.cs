@@ -8,6 +8,8 @@ public class AISimples : EnemyController
 
     void Start()
     {
+        float scale = Random.Range(0.2f, 0.3f);
+        transform.localScale = new Vector3(scale, scale, scale);
         maxHelth = 50;
         ifDamage = true;
         currentHealth = maxHelth;
@@ -30,12 +32,12 @@ public class AISimples : EnemyController
 
     public void cancelAni()
     {
+        anim.SetBool("damage", false);
+        anim.SetBool("attack", false);
+        anim.SetBool("proc", false);
         GetComponent<AISimples>().enabled = true;
         ifDamage = true;
         StartCoroutine(AttackRecover());
         AISimples.timerProc = 0;
-        anim.SetBool("damage", false);
-        anim.SetBool("attack", false);
-        anim.SetBool("proc", false);
     }
 }

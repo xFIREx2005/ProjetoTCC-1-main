@@ -9,7 +9,7 @@ public class Enemy_MongeLevel2 : EnemyController
     {
         atkEstocada, atkBey, stop, atkRicochete
     };
-    chooseState _chooseState = chooseState.atkRicochete;
+    chooseState _chooseState = chooseState.stop;
 
     public bool ifStop;
     public bool ifFollow;
@@ -23,7 +23,7 @@ public class Enemy_MongeLevel2 : EnemyController
     private void Start()
     {
         numRic = 3;
-        maxHelth = 300;
+        maxHelth = 400;
         ifDamage = true;
         currentHealth = maxHelth;
         player = GameObject.FindWithTag("Player");
@@ -73,8 +73,8 @@ public class Enemy_MongeLevel2 : EnemyController
                 {
                     ifFollow = true;
                     anim.SetBool("walk", true);
-                    speed = 2;
-                    if (dist <= 2f)
+                    speed = 5;
+                    if (dist <= 3f)
                     {                        
                         this.transform.LookAt(player.transform);
                         ifFollow = false;
@@ -89,7 +89,8 @@ public class Enemy_MongeLevel2 : EnemyController
                 if (ifAtk == true)
                 {
                     ifFollow = true;
-                    speed = 4;
+                    ifAttack = true;
+                    speed = 6;
                     anim.SetBool("bey", true);
                     StartCoroutine(TimerBey());
                     ifAtk = false;
@@ -100,10 +101,11 @@ public class Enemy_MongeLevel2 : EnemyController
             case chooseState.atkRicochete:
                 if(ifAtk == true)
                 {
-                    Vector3 pos = player.transform.position - transform.position;
+                    anim.SetBool("fly", true);
+                    /*Vector3 pos = player.transform.position - transform.position;
                     pos.y = 0;
                     Quaternion rot = Quaternion.LookRotation(pos);
-                    transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.time * 10);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 10);*/
                     atkRic = true;
                     ifAtk = false;
                 }
@@ -111,11 +113,12 @@ public class Enemy_MongeLevel2 : EnemyController
 
             case chooseState.stop:
                 _navMesh.speed = 0;
+                anim.SetBool("fly", false);
                 anim.SetBool("bey", false);
                 anim.SetBool("estoc", false);
                 if (ifStop == true)
                 {
-                    chooseAtk = Random.Range(1, 4);
+                    chooseAtk = Random.Range(1, 3);
                     timerEsp = Random.Range(2, 4);
                     StartCoroutine(TimerEsp());
                     ifStop = false;
@@ -135,18 +138,19 @@ public class Enemy_MongeLevel2 : EnemyController
     public IEnumerator TimerBey()
     {
         yield return new WaitForSeconds(Random.Range(3,6));
+        ifAttack = false;
         CancelAtk();
     }
     public IEnumerator TimerRic()
     {
+        anim.SetBool("fly", false);
         yield return new WaitForSeconds(Random.Range(1, 3));
         ifAtk = true;
     }
 
     public void AtkRicochete()
     {
-        
-        speed = .2f;
+        speed = .4f;
         transform.Translate(0, 0, speed);
     }
     public void CancelAtk()
@@ -156,20 +160,31 @@ public class Enemy_MongeLevel2 : EnemyController
         _chooseState = chooseState.stop;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.tag == "Wall")
+        if (_chooseState == chooseState.atkRicochete)
         {
-            this.transform.LookAt(player.transform);
-            atkRic = false;
-            if(numRic <= 0)
+            if (collision.gameObject.tag == "Wall")
             {
-                CancelAtk();
+                this.transform.LookAt(player.transform);
+                atkRic = false;
+                if (numRic <= 0)
+                {
+                    CancelAtk();
+                }
+                else
+                {
+                    numRic--;
+                    StartCoroutine(TimerRic());
+                }
             }
-            else
+            if (collision.gameObject.tag == "Player")
             {
-                numRic--;
-                StartCoroutine(TimerRic());
+                this.transform.LookAt(player.transform);
+                atkRic = false;
+                anim.SetBool("fly", false);
+                CancelAtk();
+                player.GetComponent<PlayerController>().TakeDamage(30);
             }
         }
     }
